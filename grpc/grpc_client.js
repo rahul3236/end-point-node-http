@@ -14,7 +14,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
-function makeGrpcRequestToServer(method, params) {
+function makeGrpcRequestToServer(method, params, jwtToken) {
   return new Promise((resolve, reject) => {
     console.info(`sending request to ${GRPC_HOST}:${GRPC_PORT}`)
     const client = new hello_proto.Hello(
@@ -22,6 +22,9 @@ function makeGrpcRequestToServer(method, params) {
       grpc.credentials.createInsecure()
     );
 
+    const meta = new grpc.Metadata();
+    meta.add('token', `Bearer ${jwtToken}`);
+    
     client[method](params, function (err, response) {
       if (err) {
         reject(err);

@@ -3,7 +3,8 @@ const express = require('express');
 const http = require('http');
 const { makeGrpcRequestToServer } = require('./grpc/grpc_client');
 const PORT = process.env.PORT || 3000;
-
+const googleJwt = require('./google-jwt.js');
+const serviceKey = ''
 const app = express();
 
 app.get('/:name', indexFunction);
@@ -27,9 +28,13 @@ server.on('listening', onListening);
 
 async function indexFunction(req, res) {
   try {
-    let response = await makeGrpcRequestToServer('sayHello', {
-      name: req.params.name,
-    });
+    const jwtToken = googleJwt.createToken();
+    let response = await makeGrpcRequestToServer(
+      'sayHello', 
+      {
+        name: req.params.name,
+      },
+      jwtToken);
     res.json({ message: response.message });
   } catch (err) {
     console.error(err);

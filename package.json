@@ -8,7 +8,10 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.1.0",
     "express": "~4.16.1",
+    "global": "^4.4.0",
     "google-protobuf": "^3.0.0",
-    "grpc": "^1.11.0"
+    "grpc": "^1.11.0",
+    "gtoken": "^5.0.2",
+    "nodemon": "^2.0.4"
   }
 }
