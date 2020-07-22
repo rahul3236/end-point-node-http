@@ -10,20 +10,23 @@
 ## Docker
 
 * Install docker using a method suitable for your operating system
-* Run `sudo docker build -t gke-http-end-point .` to build the docker image
-* Launch container: 
+* Build image: `sudo docker build -t gke-http-end-point .`
+* Launch container locally: 
 ```
-sudo docker run -d --rm -p 3000:3000 --network="host" \
+sudo docker run -d --rm -p 3000:3000 \
+  --network="host" \
   --env 'GRPC_HOST=192.168.192.105' \
   --env 'GRPC_PORT=50051' \
   http-end-point
 ```
 * Publish to GCP Container Registry:
 ```
+sudo docker build -t gke-http-end-point .
 PROJECT_ID=level01
 IMAGE_NAME=gke-http-end-point
 docker tag ${IMAGE_NAME} gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 docker push gcr.io/${PROJECT_ID}/${IMAGE_NAME}
+
 ```
 
 ## Environment Variables

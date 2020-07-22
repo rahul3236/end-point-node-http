@@ -28,7 +28,7 @@ server.on('listening', onListening);
 
 async function indexFunction(req, res) {
   try {
-    const jwtToken = googleJwt.createToken();
+    const jwtToken = await googleJwt.createToken();
     let response = await makeGrpcRequestToServer(
       'sayHello', 
       {

@@ -16,16 +16,21 @@ const hello_proto = grpc.loadPackageDefinition(packageDefinition);
 
 function makeGrpcRequestToServer(method, params, jwtToken) {
   return new Promise((resolve, reject) => {
-    console.info(`sending request to ${GRPC_HOST}:${GRPC_PORT}`)
+    console.info(
+      `
+        sending request to ${GRPC_HOST}:${GRPC_PORT}
+        jwt token: ${JSON.stringify(jwtToken)}
+      `
+    );
     const client = new hello_proto.Hello(
       `${GRPC_HOST}:${GRPC_PORT}`,
       grpc.credentials.createInsecure()
     );
 
     const meta = new grpc.Metadata();
-    meta.add('token', `Bearer ${jwtToken}`);
-    
-    client[method](params, function (err, response) {
+    meta.add('token', `Bearer ${JSON.stringify(jwtToken)}`);
+
+    client[method](params, meta, function (err, response) {
       if (err) {
         reject(err);
       }
